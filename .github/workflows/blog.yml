@@ -58,21 +58,34 @@ jobs:
     timeout-minutes: 25
     needs: [quality, image]
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    environment: production
     steps:
       - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT || 22 }}
-          script_stop: true
-          command_timeout: 20m
-          script: |
-            set -euo pipefail
-            cd /home/deploy/invoibase-blog
-            git fetch --all --prune
-            git checkout main
-            git pull --ff-only origin main
-            SKIP_GIT_PULL=1 bash scripts/deploy.sh
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_HOST }}
+          SSH_USER: ${{ secrets.DEPLOY_USER }}
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          SSH_PORT: ${{ secrets.DEPLOY_PORT }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SSH_HOST:-}" ] || [ -z "${SSH_USER:-}" ] || [ -z "${SSH_KEY:-}" ]; then
+            echo "Set repository secrets DEPLOY_HOST, DEPLOY_USER, and DEPLOY_SSH_KEY"
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          if ! grep -q "BEGIN .*PRIVATE KEY" ~/.ssh/deploy_key; then
+            echo "DEPLOY_SSH_KEY must be the private key, including BEGIN/END lines"
+            exit 1
+          fi
+          PORT="${SSH_PORT:-22}"
+          ssh-keyscan -p "$PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/deploy_key -p "$PORT" -o IdentitiesOnly=yes "${SSH_USER}@${SSH_HOST}" bash -s <<'EOS'
+          set -euo pipefail
+          cd /home/deploy/invoibase-blog
+          git fetch --all --prune
+          git checkout main
+          git pull --ff-only origin main
+          SKIP_GIT_PULL=1 bash scripts/deploy.sh
+          EOS
