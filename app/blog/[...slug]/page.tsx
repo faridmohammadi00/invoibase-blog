@@ -1,7 +1,6 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import PageTitle from '@/components/PageTitle'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
@@ -13,6 +12,8 @@ import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import { getRelatedPosts } from '@/lib/related-posts'
+import type { TocItem } from '@/components/TableOfContents'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -39,17 +40,10 @@ export async function generateMetadata(props: {
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
   const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
-  if (post.images) {
-    imageList = typeof post.images === 'string' ? [post.images] : post.images
-  }
-  const ogImages = imageList.map((img) => {
-    return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
-
   const canonicalUrl = post.canonicalUrl || `${siteMetadata.siteUrl}/blog/${post.slug}`
+  const ogImage = `${siteMetadata.siteUrl}/api/og?title=${encodeURIComponent(
+    post.title
+  )}&subtitle=${encodeURIComponent(post.summary || siteMetadata.description)}`
 
   return {
     title: post.title,
@@ -66,14 +60,14 @@ export async function generateMetadata(props: {
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
       url: canonicalUrl,
-      images: ogImages,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
       authors: authors.length > 0 ? authors : [siteMetadata.author],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images: imageList,
+      images: [ogImage],
     },
   }
 }
@@ -85,7 +79,6 @@ export const generateStaticParams = async () => {
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
-  // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
@@ -108,8 +101,11 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       name: author.name,
     }
   })
+  jsonLd['image'] = `${siteMetadata.siteUrl}/api/og?title=${encodeURIComponent(post.title)}`
 
   const Layout = layouts[post.layout || defaultLayout]
+  const relatedPosts = getRelatedPosts(post, allBlogs, 3)
+  const toc = (post.toc || []) as TocItem[]
 
   return (
     <>
@@ -117,7 +113,14 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
+      <Layout
+        content={mainContent}
+        authorDetails={authorDetails}
+        next={next}
+        prev={prev}
+        toc={toc}
+        relatedPosts={relatedPosts}
+      >
         <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
       </Layout>
     </>
