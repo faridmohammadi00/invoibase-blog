@@ -42,6 +42,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env
+
+# local audit reports (never commit)
+BLOG_STATUS.md
+PROJECT_STATUS.md
+*_STATUS.md
 
 # Contentlayer
 .contentlayer
