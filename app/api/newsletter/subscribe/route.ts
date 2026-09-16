@@ -6,11 +6,7 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as unknown
-    const email =
-      typeof body === 'object' && body !== null && 'email' in body
-        ? (body as { email: unknown }).email
-        : body
-    const result = await subscribeToNewsletter(email)
+    const result = await subscribeToNewsletter(body)
     return NextResponse.json(result)
   } catch (error) {
     if (error instanceof NewsletterError) {

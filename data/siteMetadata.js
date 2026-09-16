@@ -23,7 +23,7 @@ const siteMetadata = {
     },
   },
   newsletter: {
-    provider: '',
+    provider: 'resend',
   },
   comments: {
     provider: 'giscus',
