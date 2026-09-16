@@ -27,7 +27,7 @@ export default function InvoibaseCTA({
       <div className="mt-6">
         <Link
           href={href}
-          className="bg-primary-500 hover:bg-primary-600 inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-sm transition"
+          className="bg-primary-500 hover:bg-primary-600 inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-semibold !text-white no-underline shadow-sm transition"
         >
           {ctaLabel}
         </Link>

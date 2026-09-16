@@ -80,7 +80,7 @@
 
 @layer utilities {
   .prose {
-    & a {
+    & :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       color: var(--color-primary-500);
       &:hover {
         color: var(--color-primary-600);
@@ -102,7 +102,7 @@
   }
 
   .prose-invert {
-    & a {
+    & :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       color: var(--color-primary-500);
       &:hover {
         color: var(--color-primary-400);
