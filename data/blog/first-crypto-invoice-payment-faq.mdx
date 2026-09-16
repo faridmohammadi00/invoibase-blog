@@ -1,0 +1,151 @@
+---
+title: 'First Crypto Invoice Payment: A Freelancer FAQ'
+date: '2026-09-16'
+lastmod: '2026-09-16'
+tags: ['freelancers', 'getting-started', 'usdc', 'wallets', 'invoicing', 'non-custodial', 'faq']
+draft: false
+summary: 'A practical FAQ for freelancers receiving their first stablecoin payment — wallets, networks, taxes basics, and how non-custodial invoices actually work.'
+authors: ['default']
+layout: PostLayout
+canonicalUrl: 'https://blog.invoibase.com/blog/first-crypto-invoice-payment-faq'
+images: ['/static/images/twitter-card.png']
+---
+
+# First Crypto Invoice Payment: A Freelancer FAQ
+
+You already know how to invoice. Crypto settlement adds three new questions:
+
+1. Where do the funds land?
+2. Which network is safe to use?
+3. What do I tell my accountant?
+
+This FAQ is for freelancers and small agencies taking that first USDC/USDT payment without turning it into a research project.
+
+## Do I need a wallet before I can get paid?
+
+**Yes — you need an address you control.** That can be:
+
+- A self-custody wallet (MetaMask, Rabby, Phantom, TronLink, etc.)
+- An exchange deposit address (**higher freeze/withdrawal risk**; fine for experiments, weaker for ongoing freelance income)
+
+Non-custodial invoicing means the **client pays your address directly**. The invoicing software should verify the transfer — it should not hold the money “for later.”
+
+If you have never created a wallet:
+
+1. Install one reputable wallet for the network you expect clients to use (EVM or Solana is enough to start)
+2. Write down the recovery phrase offline — never in screenshots or Notion
+3. Copy the **receive address** carefully
+4. Send yourself a tiny test amount before sharing it on a large invoice
+
+## Do my clients need to “learn crypto”?
+
+Not as much as marketing tweets imply. Many clients already:
+
+- Hold USDT on an exchange and can withdraw on TRON or an EVM network
+- Use MetaMask / Coinbase Wallet for USDC on Polygon or Base
+- Use Phantom for Solana USDC
+
+Your job is to make the pay page explicit: **exact token + exact network + exact amount**. Confusion — not cryptography — is the usual blocker.
+
+## What should my first invoice ask for?
+
+Start simple:
+
+- Invoice currency: **USD** (so the scope of work stays familiar)
+- Settlement: **USDC** on **Polygon** *or* **USDT** on **TRON**, depending on the client
+- Due date and line items as usual
+
+Avoid starting with volatile assets (ETH/SOL) unless the client specifically wants that. Stablecoins keep the “$2,000 invoice” story intact.
+
+## What does “non-custodial” mean for me?
+
+| Custodial processor | Non-custodial invoice |
+| --- | --- |
+| Client pays a platform | Client pays your wallet |
+| Platform may delay payout | Funds arrive when the chain confirms |
+| Extra counterparty risk | You control the private keys / exchange account |
+
+Non-custodial does **not** mean “no paperwork.” You still issue a professional invoice and keep records. It means the settlement hop does not park funds on the invoicing company’s balance sheet.
+
+## How do I know the payment actually arrived?
+
+Prefer a workflow that:
+
+1. Shows a public pay page with the amount and network
+2. Detects the transaction on-chain
+3. Marks the invoice paid and stores the **transaction hash**
+4. Emails a receipt you can forward to accounting
+
+If you are verifying manually, open a block explorer for that network, paste the tx hash, and confirm:
+
+- Correct token contract  
+- Correct destination address  
+- Amount within your tolerance  
+- Enough confirmations for your comfort level  
+
+## What about taxes?
+
+Rules vary by country. Common freelancer practice:
+
+- Treat the **USD invoice amount** as the economic value of the work
+- Keep the **tx hash**, timestamp, token, network, and client name
+- Note the fair-market USD value at receipt if your jurisdiction requires crypto-asset tracking
+- Ask a tax professional before year-end — especially if you convert to local fiat later
+
+Do not assume “crypto payment = untaxed income.”
+
+## What if the client sends on the wrong network?
+
+This is the #1 failure mode.
+
+Prevention beats recovery:
+
+- Put network warnings on the pay page (“Send only USDC on Polygon”)
+- Confirm the client’s withdrawal screen before they submit large amounts
+- For first-time clients, request a tiny test transfer
+
+Recovery depends on the chain and whether funds are recoverable at all. Sometimes they are not. Treat wrong-network sends as preventable outages, not support tickets you can always reverse.
+
+## How do recurring clients work?
+
+Once a client successfully pays on a rail, **reuse that default**:
+
+- Same token  
+- Same network  
+- Same wallet address (unless you rotate for security)
+
+Consistency reduces support load more than optimizing another $0.02 of gas.
+
+## Minimal starter stack (recommended)
+
+1. One EVM wallet (Polygon/Base USDC)
+2. Optional: TronLink or exchange TRC-20 address if your clients are USDT-heavy
+3. Optional: Phantom if you work with Solana natives
+4. An invoicing tool that issues USD invoices and verifies on-chain settlement
+5. A folder (or accounting tool) for PDF invoice + receipt + tx hash
+
+<InvoibaseCTA title="Create your first non-custodial invoice" description="Issue a USD invoice, share a pay link, and get settled wallet-to-wallet in USDC or USDT — without giving up custody of your funds." ctaLabel="Start free →" href="https://invoibase.com/signup" />
+
+## Quick answers
+
+**Is crypto invoicing only for Web3 agencies?**  
+No. Any freelancer with international clients can use stablecoins as a settlement rail while keeping the invoice in USD.
+
+**Should I put my seed phrase in the invoice software?**  
+Never. Share only public addresses.
+
+**Is USDT or USDC “safer”?**  
+They are different issuer and market-risk profiles. Pick the asset your client can send reliably, then document it. For U.S.-facing regulatory context, see our [GENIUS Act overview](/blog/genius-act-usdc-usdt-freelancer-payments).
+
+**What if I only want fiat at the end?**  
+Receive stablecoins, then convert through an exchange or on-ramp/off-ramp you trust. The invoice layer and the conversion layer can be separate decisions.
+
+## Bottom line
+
+Your first crypto invoice payment does not require becoming a trader. It requires:
+
+- A wallet address you control  
+- A clear token + network pair  
+- A verification trail your future self (and accountant) can read  
+
+Start with one stablecoin rail, win one successful payment, then expand.
