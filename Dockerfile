@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:20-alpine AS deps
+FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 ENV HUSKY=0
@@ -6,7 +6,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 RUN node .yarn/releases/yarn-3.6.1.cjs install --immutable
 
-FROM public.ecr.aws/docker/library/node:20-alpine AS builder
+FROM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 ENV HUSKY=0
@@ -18,7 +18,7 @@ COPY --from=deps /app/.yarn ./.yarn
 COPY . .
 RUN node .yarn/releases/yarn-3.6.1.cjs build
 
-FROM public.ecr.aws/docker/library/node:20-alpine AS runner
+FROM node:20-alpine AS runner
 RUN apk add --no-cache libc6-compat wget
 WORKDIR /app
 
