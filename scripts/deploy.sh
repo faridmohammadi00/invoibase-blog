@@ -55,5 +55,9 @@ log "Rolling blog container"
 wait_healthy 90
 
 log "Verifying origin"
-curl -fsS -o /dev/null -H 'Host: blog.invoibase.com' http://127.0.0.1/
+# Run inside the nginx container, not via the published host port: nginx now
+# restricts inbound traffic to Cloudflare's ranges + 127.0.0.1, and a host-side
+# curl through the published port gets NAT'd to the Docker bridge gateway IP
+# rather than preserving 127.0.0.1, which nginx would otherwise reject.
+"${COMPOSE[@]}" exec -T nginx curl -fsS -o /dev/null -H 'Host: blog.invoibase.com' http://127.0.0.1/
 log "Deploy complete"
