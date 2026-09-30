@@ -1,0 +1,54 @@
+---
+title: 'Now Live: USDC Settlement on Base'
+date: '2026-09-30'
+lastmod: '2026-09-30'
+tags: ['product-update', 'base', 'usdc', 'invoicing', 'freelancers']
+draft: true
+summary: 'Invoibase invoices can now settle in USDC on Base, alongside existing Ethereum, Polygon, Arbitrum, Solana, and TRON support — same non-custodial verification, lower L2 fees.'
+authors: ['default']
+layout: PostLayout
+canonicalUrl: 'https://blog.invoibase.com/blog/usdc-settlement-on-base'
+images: ['/static/images/twitter-card.png']
+---
+
+# Now Live: USDC Settlement on Base
+
+One more network just joined the list of places freelancers can get paid on Invoibase: **Base**. Invoices can now be issued for USDC settlement on Base, verified the same non-custodial way as every other supported network.
+
+## What's supported today
+
+| Network | USDC | USDT |
+| --- | --- | --- |
+| Ethereum | ✅ | ✅ |
+| Polygon | ✅ | ✅ |
+| Arbitrum | ✅ | ✅ |
+| **Base** | ✅ **new** | — |
+| Solana | ✅ | ✅ |
+| TRON (TRC-20) | — | ✅ |
+
+Base joins the existing EVM lineup, so anything that already worked for Ethereum, Polygon, and Arbitrum — invoice creation, the pay page, on-chain verification, platform-fee routing — works identically on Base. Nothing about how you invoice changes; you just get one more option for where the client's wallet actually sends funds.
+
+## Why Base
+
+Base is an Ethereum L2 rollup with a fraction of mainnet's gas cost — typically a couple of cents per transfer instead of a few dollars. For clients who already hold funds on an L2 (increasingly common as more consumer and enterprise wallets default there), this removes a bridge-then-pay step that used to add friction to an invoice.
+
+It's the same reason Polygon and Arbitrum were added before: cheaper, faster settlement without asking the client to learn a new custody model. Base extends that to one more ecosystem your clients may already be using.
+
+## How verification works
+
+Nothing changed in the trust model. Every payment — regardless of network — is verified the same way:
+
+1. The invoice's pay page shows the exact token, network, and destination address.
+2. The client sends the transfer from their own wallet.
+3. Invoibase checks the transaction on-chain: correct token contract, correct destination, sufficient confirmations, and (for invoices with a platform fee) that the fee transfer landed too.
+4. Once confirmed, the invoice is marked paid and a receipt with the transaction hash is generated.
+
+Funds never pass through an Invoibase-controlled wallet. The client pays your address directly, on Base just like every other supported chain.
+
+<InvoibaseCTA title="Try USDC settlement on Base" description="Create a USD invoice and choose USDC on Base at checkout — same non-custodial verification, lower network fees." ctaLabel="Create an invoice →" href="https://invoibase.com/dashboard" />
+
+## What's next
+
+We're evaluating additional settlement rails, including Optimism, TON, and native-asset payments (ETH, SOL, POL) beyond stablecoins. Those aren't live yet — this post only covers what's shipped today: USDC on Base, in addition to the existing Ethereum, Polygon, Arbitrum, Solana, and TRON support.
+
+If a client asks whether a specific network is supported, the invoice creation screen is the source of truth — it only offers rails that are fully wired up for verification.
